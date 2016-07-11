@@ -11,6 +11,7 @@
 
 /*global plupload ,mOxie*/
 /*global ActiveXObject */
+/*global define */
 /*exported Qiniu */
 /*exported QiniuJsSDK */
 
@@ -1412,6 +1413,16 @@ var Qiniu = new QiniuJsSDK();
 
 global.Qiniu = Qiniu;
 
-global.QiniuJsSDK = QiniuJsSDK;
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = QiniuJsSDK;
+} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+    // register as 'qiniu-js', consistent with npm package name
+    define('qiniu-js', [], function () {
+        return QiniuJsSDK;
+    });
+} else {
+    global.QiniuJsSDK = QiniuJsSDK;
+}
 
 })( window );
